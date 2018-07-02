@@ -1,0 +1,183 @@
+<div *ngIf="enabled && hoa">
+	<div class="row">
+		<div class="col-md-12">
+			<tabset>
+				<tab [active]="selectedHeading == 'heading1'" *ngIf="enabledHeading1" (select)="select('heading1')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-home"></i> {{contentService.contents['hoadetail.heading1']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div>
+
+								<div class="panel panel-default">
+									<div class="panel-body">
+
+										<hoadetailform [hoa]="hoa" [read_only]="read_only" (onSave)="onSave()" (onHousepartsChanged)="onHousepartsChanged()" #hoaDetailForm></hoadetailform>
+
+									</div>
+
+								</div>
+
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<!-- <div *ngIf="enabledHeading1Goals" class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default" *ngIf="enabledHeading1Goals">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group" *ngIf="tagFilterOptions">
+												<label for="hoa.goals">Doelstellingen</label>
+												<br/>
+												<div class="btn-group" id="hoa.tagfiltertag">
+													<div *ngFor="let t of tagFilterOptions" style="padding-bottom: 10px;">
+														<label class="btn btn-default" [(ngModel)]="hoa.tagfiltertag" [btnRadio]="t.tag" (ngModelChange)="tagFilterChangeHandler(false)"
+														 [attr.disabled]="read_only?'':null">{{t.name}}
+															<span *ngIf="showTags == 'Y'"> ({{t.tag}}) </span>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div> -->
+
+				</tab>
+				<tab [active]="selectedHeading == 'heading2'" *ngIf="enabledHeading2" (select)="select('heading2')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-certificate"></i> {{contentService.contents['hoadetail.heading2']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div class="panel panel-default">
+								<div class="panel-body">
+
+									<wizard2 [treename]="'02DOCUMENTS'" [reference_table]="'hoa'" [reference_id]='hoa.id' [reference_string]="'02DOCUMENTS'"
+									 [read_only]="read_only" [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #documentsWizard></wizard2>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading3'" *ngIf="enabledHeading3" (select)="select('heading3')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['hoadetail.heading3']}}
+					</template>
+					<br/>
+
+					<div class="row">
+
+						<div class="col-md-12">
+
+							<div class="panel panel-default">
+
+								<div class="panel-body">
+
+									<wizard2 [treename]="'01HOUSEPARTS'" [reference_table]="'hoa'" [reference_id]='hoa.id' [reference_string]="'01HOUSEPARTS'"
+									 [read_only]="read_only" [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #housePartsWizard></wizard2>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading4'" *ngIf="enabledHeading4" (select)="select('heading4')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['hoadetail.heading4']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+
+							<div class="panel panel-default">
+
+								<div class="panel-body">
+									<!--
+										<wizard2 [treename]="'03REPORTS'" [reference_table]="'hoa'" [reference_id]='hoa.id' [reference_string]="'03REPORTS'" [read_only]="read_only"
+										 [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #reportsWizard></wizard2>
+										-->
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading5'" *ngIf="enabledHeading5" (select)="select('heading5')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-wrench"></i> {{contentService.contents['hoadetail.heading5']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+
+							<div class="panel panel-default">
+
+								<div class="panel-body">
+									<reportdetail [reportName]="'report4'" [parameters]="getReportDetailParameterString()" #mjopReportComponent></reportdetail>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading6'" *ngIf="enabledHeading6" (select)="select('heading6')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['hoadetail.heading6']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div>
+
+								<div class="row">
+
+									<div class="col-md-12">
+
+										<div class="panel panel-default">
+
+											<div class="panel-body">
+												<reports *ngIf="hoa && hoa.tagfiltertags" [parameters]="'hoa:' + hoa.id + '::' + getTagFilterParameter() + ':' + getHousepartsParameter()"
+												 #reportsComponent></reports>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+			</tabset>
+
+
+		</div>
+	</div>
+</div>

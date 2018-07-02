@@ -1,0 +1,65 @@
+<div *ngIf="images">
+
+	<div *ngIf="images.length > 0">
+		<div *ngFor="let image of images" [class]="css_class">
+
+			<image [image]="image" [read_only]="read_only" [show_info]="show_info" [show_download]="show_download" [show_rotate]="show_rotate"
+			 [show_delete]="show_delete" (onDelete)=" onDelete(image); " (onDownload)=" onDownload(image); " (onClick)=" onClick(image); "></image>
+
+		</div>
+	</div>
+
+	<div *ngIf="images.length == 0 && !uploading">
+		<div [class]="css_class">
+			<a class="thumbnail">
+				<img class='iconimage' [src]="'/images/no-image-box.png'" />
+			</a>
+		</div>
+	</div>
+
+	<div *ngIf="uploading">
+		<div [class]="css_class">
+			<a class="thumbnail">
+				<img style="max-width:50px; " [src]="'/images/spinner.gif'" />
+			</a>
+		</div>
+	</div>
+
+	<div *ngIf="!read_only">
+		<div [class]="css_class">
+			<label class="btn btn-default btn-file">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				Toevoegen...
+				<input type="file" style="display: none;" (change)="fileChangeEvent($event)">
+			</label>
+		</div>
+	</div>
+
+</div>
+
+
+
+<div>
+	<div bsModal #modalWindow="bs-modal" class="modal fade" tabindex="-1" role="dialog" (onHide)="onHideModal($event)" (onShow)="onShowModal($event)">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" (click)="modalWindow.hide()" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">{{modalImageTitle}}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<image *ngIf="modalViewer == 'image' && modalImage" [image]="modalImage" [read_only]="read_only" [show_info]="show_info"
+							 [show_download]="show_download" [show_rotate]="false" [show_delete]="false" (onClick)=" modalWindow.hide() "></image>
+							<pdf-viewer #modalPdfViewer [src]="modalImageUrl" [page]="1" [original-size]="true" [render-text]="true" [show-all]="true"
+							 style="display: block;" *ngIf=" modalViewer == 'pdf' "></pdf-viewer>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+<div *ngIf="enabled">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div *ngIf="parties">
+                <div *ngIf="parties.length > 0">
+
+                    <div class="list-group">
+                        <a style="cursor: pointer;" class="list-group-item" *ngFor="let party of parties" (click)="goToDetails(party)">
+                            <!-- <span class="pull-right">
+                                <button type="button" class="btn btn-default" (click)="delete($event, party)">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </span> -->
+                            <h4 class="list-group-item-heading">{{party.displayname || '(voer gegevens in)'}}&nbsp;
+                            </h4>
+                            <p class="list-group-item-text">{{party.email}}&nbsp;</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div (click)="add()">
+                <button class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{contentService.contents['site.button.add']}}</button>
+            </div>
+        </div>
+
+    </div>
+</div>

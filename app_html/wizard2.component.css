@@ -1,0 +1,76 @@
+/*
+ * Glyphicons
+ *
+ * Special styles for displaying the icons and their classes in the docs.
+ */
+
+.bs-glyphicons {
+  margin: 0 -10px 20px;
+  overflow: hidden;
+}
+.bs-glyphicons-list {
+  padding-left: 0;
+  list-style: none;
+}
+.bs-glyphicons li {
+  float: left;
+  width: 25%;
+  height: 170px;
+  padding: 10px;
+  /*font-size: 10px;*/
+  line-height: 1.4;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+
+.bs-glyphicons li:hover {
+  /*color: #fff;*/
+  background-color: #EEEEEE;
+}
+
+.outerwrapper 
+{
+	position: 	relative;
+}
+
+.fixtop {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.fixbottom {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.iconimage {
+  padding: 10px;
+}
+
+.progress {
+  height: 5px;
+}
+
+
+@media (min-width: 768px) {
+  .bs-glyphicons {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .bs-glyphicons li {
+    width: 16.6667%;
+  	height: 200px;
+    /*font-size: 12px;*/
+  }
+
+  .iconimage {
+    padding-top: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+}

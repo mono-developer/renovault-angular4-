@@ -1,0 +1,341 @@
+<form #objectDetailForm='ngForm'>
+    <div class="row">
+
+        <div class="col-md-12 col-md-offset-0">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="object.postalcode">Postcode</label>
+                        <input class="form-control" #postalcodeInput id="object.postalcode" name="object.postalcode" [(ngModel)]="object.postalcode"
+                            (ngModelChange)="lookup()" [pattern]="postalcodePattern" placeholder="3039LD" [disabled]="read_only">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="object.housenumber">Huisnummer</label>
+                        <input class="form-control" #housenumberInput id="object.housenumber" name="object.housenumber" [(ngModel)]="object.housenumber"
+                            (ngModelChange)="lookup()" [pattern]="housenumberPattern" placeholder="70" [disabled]="read_only">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="object.housenumberadd">Toevoeging</label>
+                        <input class="form-control" #housenumberaddInput id="object.housenumberadd" name="object.housenumberadd" [(ngModel)]="object.housenumberadd"
+                            (ngModelChange)="lookup()" [disabled]="read_only">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.street">Straat</label>
+                        <input class="form-control" id="object.street" name="object.street" [(ngModel)]="object.street" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.city">Woonplaats</label>
+                        <input class="form-control" id="object.city" name="object.city" [(ngModel)]="object.city" disabled>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Kaart</label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div *ngIf="object.lookupdone">
+                                <googlemap #googleMap [lat]="object.lat" [lon]="object.lon"></googlemap>
+                            </div>
+                            <div *ngIf="!object.lookupdone">
+                                Voer een bestaande combinatie postcode en huisnummer in...
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.owner">Ik ben de eigenaar</label>
+                        <br/>
+                        <div class="btn-group" id="object.owner">
+                            <label class="btn btn-default" *ngFor="let yesno of yesnos" [(ngModel)]="object.owner" name="object.owner" [btnRadio]="yesno.value"
+                                [attr.disabled]="read_only?'':null">{{yesno.display}}</label>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf=" object.owner == 'yes' ">
+                    <div class="form-group">
+                        <label for="object.ownersinceyear">Eigenaar sinds</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">Jaar</div>
+                            <input class="form-control" id="object.ownersinceyear" name="object.ownersinceyear" [(ngModel)]="object.ownersinceyear" pattern="[0-9]{4}"
+                                placeholder="Bijvoorbeeld: 2012" [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4" *ngIf=" object.owner == 'yes' ">
+                    <div class="panel">
+                        Kadastrale registratie
+                        <images [reference_table]="'object'" [reference_id]="object.id" [reference_string]="'owner_kadaster_registration'" [read_only]="read_only"></images>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <!--<select class="form-control" id="party.partytype" [(ngModel)]="party.partytype">
+                    <option *ngFor="let type of partytypes" [value]="type.value">  
+                        {{type.display}}
+                    </option>
+                    </select>-->
+
+                        <label for="object.objecttype">Type</label>
+                        <br/>
+                        <div class="btn-group" id="object.objecttype">
+                            <label class="btn btn-default" *ngFor="let type of objecttypes" [(ngModel)]="object.objecttype" name="object.objecttype"
+                                [btnRadio]="type.value" [attr.disabled]="read_only?'':null">{{type.display}}</label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf=" object.objecttype == 'rijtjeswoning' || object.objecttype == 'appartement' ">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.objectsubtype">Subtype</label>
+                        <br/>
+                        <div class="btn-group" id="object.objectsubtype">
+                            <label class="btn btn-default" *ngFor="let subtype of objectsubtypes" [(ngModel)]="object.objectsubtype" name="object.objectsubtype"
+                                [btnRadio]="subtype.value" [attr.disabled]="read_only?'':null">{{subtype.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf=" object.objecttype == 'appartement' ">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.objectposition">Positie</label>
+                        <br/>
+                        <div class="btn-group" id="object.objectposition">
+                            <label class="btn btn-default" *ngFor="let position of objectpositions" [(ngModel)]="object.objectposition" name="object.objectposition"
+                                [btnRadio]="position.value" [attr.disabled]="read_only?'':null">{{position.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Aanwezigheid huisonderdelen
+                            <span *ngIf="!read_only">(verslepen)</span>
+                        </label>
+                        <br/>
+                        <!--<div class="btn-group" id="object.houseparts">
+                        <div *ngFor="let housepart of houseparts" style="padding-bottom: 10px;">
+                            <label class="btn btn-default" [(ngModel)]="object.houseparts" [btnRadio]="housepart.value">{{housepart.display}}</label>
+                        </div>
+                    </div>-->
+                        <ng-template #itemTemplate let-item="item" let-index="index">
+                            <span class="btn btn-default active sortable-btn" *ngIf='objectService.defaultHouseparts'>
+                                <span class="glyphicon glyphicon-menu-hamburger"></span>{{objectService.getHousepartName(item.value)}}</span>
+                        </ng-template>
+                        <ng-template #itemTemplateExcluded let-item="item" let-index="index">
+                            <span class="btn btn-default sortable-btn" *ngIf='objectService.defaultHouseparts'>
+                                <span class="glyphicon glyphicon-menu-hamburger"></span>{{objectService.getHousepartName(item.value)}}</span>
+                        </ng-template>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Aanwezig</label>
+                                <div *ngIf="!read_only">
+                                    <bs-sortable [(ngModel)]="object.houseparts" (ngModelChange)="setHousepartsChanged()" name="object.houseparts" [itemTemplate]="itemTemplate"
+                                        placeholderItem="Sleep hierheen..." itemClass="sortable-item" itemActiveClass="sortable-item-active"
+                                        placeholderClass="sortable-item" wrapperClass="sortable-wrapper">
+                                    </bs-sortable>
+                                </div>
+                                <div *ngIf="read_only">
+                                    <div *ngFor='let housepart of object.houseparts'>
+                                        {{objectService.getHousepartName(housepart)}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Niet aanwezig</label>
+                                <div *ngIf="!read_only">
+                                    <bs-sortable [(ngModel)]="object.housepartsexcluded" (ngModelChange)="setHousepartsChanged()" name="object.housepartsexcluded"
+                                        [itemTemplate]="itemTemplateExcluded" placeholderItem="Sleep hierheen..." itemClass="sortable-item"
+                                        itemActiveClass="sortable-item-active" placeholderClass="sortable-item" wrapperClass="sortable-wrapper">
+                                    </bs-sortable>
+                                </div>
+                                <div *ngIf="read_only">
+                                    <div *ngFor='let housepart of object.housepartsexcluded'>
+                                        {{objectService.getHousepartName(housepart)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.constructionyear">Bouwjaar</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">Jaar</div>
+                            <input class="form-control" id="object.constructionyear" name="object.constructionyear" [(ngModel)]="object.constructionyear"
+                                pattern="[0-9]{4}" placeholder="Bijvoorbeeld: 2012" [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.livingsurface">Woonoppervlakte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.livingsurface" name="object.livingsurface" [(ngModel)]="object.livingsurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.volume">Inhoud</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.volume" name="object.volume" [(ngModel)]="object.volume" pattern="[0-9]+" [disabled]="read_only">
+                            <div class="input-group-addon">m3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.outsidesurface">Gebouwgebonden buitenruimte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.outsidesurface" name="object.outsidesurface" [(ngModel)]="object.outsidesurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.lotsurface">Perceeloppervlakte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.lotsurface" name="object.lotsurface" [(ngModel)]="object.lotsurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.nooffloors">Aantal woonlagen</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.nooffloors" name="object.nooffloors" [(ngModel)]="object.nooffloors" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.noofrooms">Aantal kamers</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.noofrooms" name="object.noofrooms" [(ngModel)]="object.noofrooms" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.noofwetrooms">Aantal natte ruimtes</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.noofwetrooms" name="object.noofwetrooms" [(ngModel)]="object.noofwetrooms" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.noofbasements">Aantal kelders</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.noofbasements" name="object.noofbasements" [(ngModel)]="object.noofbasements" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="object.noofbalconies">Aantal balkons</label>
+                        <div class="input-group">
+                            <input class="form-control" id="object.noofbalconies" name="object.noofbalconies" [(ngModel)]="object.noofbalconies" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.familyadults">Aantal inwonende volwassenen</label>
+                        <br/>
+                        <div class="btn-group" id="object.familyadults">
+                            <label class="btn btn-default" *ngFor="let familyadult of familyadults" [(ngModel)]="object.familyadults" name="object.familyadults"
+                                [btnRadio]="familyadult.value" [attr.disabled]="read_only?'':null">{{familyadult.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="object.familychildren">Aantal inwonende kinderen</label>
+                        <br/>
+                        <div class="btn-group" id="object.familychildren">
+                            <label class="btn btn-default" *ngFor="let familychild of familychildren" [(ngModel)]="object.familychildren" name="object.familychildren"
+                                [btnRadio]="familychild.value" [attr.disabled]="read_only?'':null">{{familychild.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div (click)="save()" *ngIf="!read_only && !autoSaveService.enabled">
+                <hr/>
+                <button class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['site.button.save']}}</button>
+            </div>
+        </div>
+    </div>
+</form>

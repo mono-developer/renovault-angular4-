@@ -1,0 +1,6 @@
+node_modules/
+google-cloud-sdk/**
+vendor/**
+scripts/**
+composer.json
+composer.lock

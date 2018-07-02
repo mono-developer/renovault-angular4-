@@ -1,0 +1,110 @@
+<div class="row">
+
+	<div class="col-md-12">
+
+		<div *ngIf="display == 'MULTIPAGE'">
+
+			<div *ngIf="multipageShowParent == true">
+
+				<!-- <div *ngIf="showTags == 'Y'" class='pull-right' style='min-height: 65px;'>
+					<span class="label label-info" style="white-space: normal;">{{wizardQuestion.tags}}</span>
+				</div> -->
+
+				<h4 *ngIf="!hide_question_text">{{wizardQuestion.text}}</h4>
+
+				<div class="row" style="padding-top: 20px;">
+					<div class="col-md-12">
+						<div class='bs-glyphicons'>
+							<ul class='bs-glyphicons-list'>
+								<li *ngFor="let answer of wizardQuestion.navigation_answers" (click)=' onClick(answer.id, answer.text) '>
+									<div class='outerwrapper'>
+										<div class='fixtop' style='min-height: 65px;'>
+											<span class="label label-success" style="white-space: normal;">{{answer.text}}</span>
+										</div>
+										<div *ngIf="showTags == 'Y'" class='fixbottom' style='min-height: 65px;'>
+											<span class="label label-info" style="white-space: normal;">{{answer.tags}}</span>
+										</div>
+										<div class='iconimage'>
+											<img class="img-responsive" [src]="answer.image ? answer.image : '/images/no-image-box.png' " />
+										</div>
+										<div>
+											<progressbar [value]="answer.no_of_answers" [max]="answer.no_of_questions" type="info">
+											</progressbar>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<div *ngIf="multipageShowParent == false">
+				<ol class='breadcrumb'>
+					<li>
+						<a (click)="onClickBackBreadcrumb($event)" style='cursor: pointer;'>
+							<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Terug</a>
+					</li>
+					<li class="active"> {{multipageAnswerText}} </li>
+				</ol>
+
+				<wizard2 *ngIf='multipageShowParent == false' [treename]='treename' [question_id]='wizardQuestion.id' [answer_id]='multipageAnswerId'
+				 [reference_table]='reference_table' [reference_id]='reference_id' [reference_string]=" reference_string + '~' + wizardQuestion.id + '~~' + multipageAnswerId + '~' "
+				 [tagfilterparameter]="tagfilterparameter" [read_only]="read_only" (onSaveClicked)=' saveClicked($event); ' (onQuestionInstanceChanged)=' saveClicked($event); '
+				 #visibleChild></wizard2>
+
+			</div>
+
+		</div>
+
+
+		<div *ngIf="display=='ACCORDION' ">
+
+			<div *ngIf="showTags == 'Y'" class='pull-right' style='min-height: 65px;'>
+				<span class="label label-info" style="white-space: normal;">{{wizardQuestion.tags}}</span>
+			</div>
+			<h4 *ngIf="!hide_question_text">{{wizardQuestion.text}}</h4>
+
+
+
+			<accordion [closeOthers]="true">
+				<accordion-group *ngFor="let answer of wizardQuestion.navigation_answers " #group>
+					<div accordion-heading (click)="onClickAccordionHeading($event)">
+						<div class="row ">
+
+							<div class="col-md-1 " style="top: 10px; ">
+								<progressbar [value]="answer.no_of_answers " [max]="answer.no_of_questions " type="info ">
+								</progressbar>
+							</div>
+							<div class="col-md-11 ">
+								{{answer.text}}
+								<!-- <i class="pull-right float-xs-right glyphicon " [ngClass]="{ 'glyphicon-chevron-down': group?.isOpen,
+				 'glyphicon-chevron-right': !group?.isOpen} "></i> -->
+								<div *ngIf="showTags == 'Y'" class='pull-right' style='min-height: 65px;'>
+									<span class="label label-info" style="white-space: normal;">{{answer.tags}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<wizard2 *ngIf='group?.isOpen' [treename]='treename' [question_id]='wizardQuestion.id' [answer_id]='answer.id' [reference_table]='reference_table'
+					 [reference_id]='reference_id' [reference_string]=" reference_string + '~' + wizardQuestion.id + '~~' + answer.id + '~' "
+					 [tagfilterparameter]="tagfilterparameter" [read_only]="read_only" (onSaveClicked)=' saveClicked($event); ' (onQuestionInstanceChanged)=' saveClicked($event); '
+					 #visibleChild></wizard2>
+				</accordion-group>
+			</accordion>
+
+
+		</div>
+
+		<div *ngIf="display=='QUESTIONS' ">
+			<questioninstances [wizardQuestions]='wizardQuestions' [reference_table]='reference_table' [reference_id]='reference_id'
+			 [reference_string]='reference_string' [read_only]="read_only" (onSaveClicked)=' saveClicked($event); ' (onQuestionInstanceChanged)=' saveClicked($event); '
+			 #visibleChild></questioninstances>
+		</div>
+
+	</div>
+
+</div>

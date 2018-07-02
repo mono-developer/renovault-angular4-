@@ -1,0 +1,88 @@
+<div>
+	<div bsModal #shareModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div *ngIf="bean">
+					<div class="modal-header">
+						<button type="button" class="close" (click)="shareModal.hide();" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">
+							<!-- {{contentService.contents['projects.modal.title']}} -->Delen
+						</h4>
+						{{bean.street || '(voer adresgegevens in)'}} {{bean.housenumber}} {{bean.housenumberadd}}
+					</div>
+					<div class="modal-header">
+						<div class="row" *ngIf="securityRecords">
+							<div class="col-md-12">
+								<div class="row">
+									<div class="col-md-12">
+										<typeahead [inputBeanType]="'party'" [inputNewPartyType]="'houseowner'" [inputOnlyEmail]="true" (onSelectionChanged)="selected($event)"></typeahead>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12" *ngIf="typeaheadComponent && typeaheadComponent.selectedBean">
+										<!-- <alert type="info"> -->
+										<div *ngIf="!findInSecurityRecords(typeaheadComponent.selectedBean.email)">
+											Deel dit huis met '{{typeaheadComponent.selectedBean.email}}'.
+											<div>
+												<button class="btn btn-default" (click)="add(typeaheadComponent.selectedBean)">
+													<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>&nbsp;{{contentService.contents['site.button.share']}}</button>
+											</div>
+										</div>
+										<div *ngIf="findInSecurityRecords(typeaheadComponent.selectedBean.email)">
+											Dit huis is al gedeeld met '{{typeaheadComponent.selectedBean.email}}'
+										</div>
+										<!-- </alert> -->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-body">
+						<div class="row" *ngIf="securityRecords">
+							<div class="col-md-12">
+								<div *ngIf='securityRecords.length > 0'>
+									<div class="list-group">
+										<a class="list-group-item" *ngFor="let s of securityRecords" (click)="securityClick($event)">
+											<h4 class="list-group-item-heading">{{s.granteelogin}}
+												<span class="pull-right">
+													<button *ngIf="1 == 1" type="button" class="btn btn-default" (click)="toggleSelect($event, s)">
+														<span *hideItBootstrap="['xs']">Overdragen</span>
+														<span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+													</button>
+													<button *ngIf="1 == 1" type="button" class="btn btn-default" (click)="delete($event, s)">
+														<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+													</button>
+												</span>
+											</h4>
+											<p class="list-group-item-text">Bekijken</p>
+											<span *ngIf="selectedSecurityRecord == s.id">
+												<br/>
+											</span>
+											<alert *ngIf="selectedSecurityRecord == s.id" type="info">
+												Wilt u
+												<b>{{bean.street || '(voer adresgegevens in)'}} {{bean.housenumber}} {{bean.housenumberadd}}</b> overdragen aan
+												<b>{{s.granteelogin}}</b>?
+												<br/>
+												<br/>
+												<span>
+													<button *ngIf="1 == 1" type="button" class="btn btn-default" (click)="transfer($event, s)">
+														Ja
+													</button>
+													<button *ngIf="1 == 1" type="button" class="btn btn-default" (click)="toggleSelect($event, s)">
+														Nee
+													</button>
+												</span>
+											</alert>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

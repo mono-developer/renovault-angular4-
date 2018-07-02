@@ -1,0 +1,18 @@
+<div *ngIf="wizardQuestions">
+
+	<form #questionInstancesForm='ngForm'>
+		<div *ngFor="let wizardQuestion of wizardQuestions">
+			<questioninstance [wizardQuestion]="wizardQuestion" [reference_table]='reference_table' [reference_id]='reference_id' [reference_string]="reference_string + '~' + wizardQuestion.id + '~'"
+			 [read_only]="read_only"></questioninstance>
+
+		</div>
+
+		<div *ngIf="!read_only && !autoSaveService.enabled">
+			<hr/>
+			<button class="btn btn-default" (click)=" save(); ">
+				<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Opslaan</button>
+		</div>
+	</form>
+
+
+</div>

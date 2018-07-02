@@ -1,0 +1,219 @@
+<div *ngIf="enabled && project">
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> {{project.name}}
+					</div>
+					<div class="panel-body">
+
+
+						<div class="col-md-12">
+							<h1>Project '{{project.name}}'</h1>
+							<hr/>
+						</div>
+
+
+						<tabset type="pills">
+							<tab [active]="selectedTab == 1">
+								<template tabHeading>
+									<i class="glyphicon" [class.glyphicon-ok]="project.phase.general" [class.glyphicon-none]="!project.phase.general"></i> {{contentService.contents['projectdetail.heading1']}}
+								</template>
+
+								<div class="row" *ngIf="project.phase">
+									<div class="col-md-12">
+										<br/>
+										<div class="form-group">
+											<label class="btn btn-default" btnCheckbox [(ngModel)]="project.phase.general">
+												<span class="glyphicon" [class.glyphicon-check]="project.phase.general" [class.glyphicon-unchecked]="!project.phase.general"
+												 aria-hidden="true"></span>
+												{{contentService.contents['projectdetail.button.finished']}}
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="project.name">Naam</label>
+											<input class="form-control" id="project.name" [(ngModel)]="project.name" required>
+										</div>
+
+
+										<div class="form-group">
+											<label for="project.description">Beschrijving</label>
+											<textarea rows="6" class="form-control" id="project.description" [(ngModel)]="project.description"></textarea>
+										</div>
+
+									</div>
+
+									<div class="col-md-4">
+
+										<div class="form-group">
+											<label for="project.startdate">Start</label>
+											<input class="form-control" id="project.startdate" value="{{project.startdate | date: 'dd-MM-yyyy'}}" disabled="true">
+											<!-- <datepicker [(ngModel)]="project.startdate" ></datepicker> -->
+										</div>
+
+									</div>
+
+									<div class="col-md-4">
+
+										<div class="form-group">
+											<label for="project.enddate">Eind</label>
+											<input class="form-control" id="project.enddate" value="{{project.enddate | date: 'dd-MM-yyyy'}}" disabled="true">
+											<!-- <datepicker [(ngModel)]="project.enddate" ></datepicker> -->
+										</div>
+
+									</div>
+
+								</div>
+
+
+
+
+								<div class="row">
+
+									<div class="col-md-4" (click)="save()">
+										<button class="btn btn-default">
+											<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['site.button.save']}}</button>
+									</div>
+
+								</div>
+							</tab>
+
+							<tab [active]="selectedTab == 2">
+								<template tabHeading>
+									<i class="glyphicon" [class.glyphicon-ok]="project.phase.preparation" [class.glyphicon-none]="!project.phase.preparation"></i> {{contentService.contents['projectdetail.heading2']}}
+								</template>
+
+								<div class="row" *ngIf="project.phase">
+									<div class="col-md-12">
+										<br/>
+										<div class="form-group">
+											<label class="btn btn-default" btnCheckbox [(ngModel)]="project.phase.preparation">
+												<span class="glyphicon" [class.glyphicon-check]="project.phase.preparation" [class.glyphicon-unchecked]="!project.phase.preparation"
+												 aria-hidden="true"></span>
+												{{contentService.contents['projectdetail.button.finished']}}
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<h2>Ontwerp en Berekeningen</h2>
+										<hr/>
+
+										<images [reference_table]="'project'" [reference_id]="project.id" [reference_string]="'designs'" [css_class]="'col-md-2'"></images>
+
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<h2>Offertes</h2>
+										<hr/>
+
+										<images [reference_table]="'project'" [reference_id]="project.id" [reference_string]="'offers'" [css_class]="'col-md-2'"></images>
+
+									</div>
+								</div>
+							</tab>
+
+							<tab [active]="selectedTab == 3">
+								<template tabHeading>
+									<i class="glyphicon" [class.glyphicon-ok]="project.phase.execution" [class.glyphicon-none]="!project.phase.execution"></i> {{contentService.contents['projectdetail.heading3']}}
+								</template>
+								<div class="row" *ngIf="project.phase">
+									<div class="col-md-12">
+										<br/>
+										<div class="form-group">
+											<label class="btn btn-default" btnCheckbox [(ngModel)]="project.phase.execution">
+												<span class="glyphicon" [class.glyphicon-check]="project.phase.execution" [class.glyphicon-unchecked]="!project.phase.execution"
+												 aria-hidden="true"></span>
+												{{contentService.contents['projectdetail.button.finished']}}
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<h2>Fotos</h2>
+										<hr/>
+
+										<images [reference_table]="'project'" [reference_id]="project.id" [reference_string]="'photos'" [css_class]="'col-md-2'"></images>
+
+									</div>
+								</div>
+							</tab>
+
+							<tab [active]="selectedTab == 4">
+								<template tabHeading>
+									<i class="glyphicon" [class.glyphicon-ok]="project.phase.handover" [class.glyphicon-none]="!project.phase.handover"></i> {{contentService.contents['projectdetail.heading4']}}
+								</template>
+								<div class="row" *ngIf="project.phase">
+									<div class="col-md-12">
+										<br/>
+										<div class="form-group">
+											<label class="btn btn-default" btnCheckbox [(ngModel)]="project.phase.handover">
+												<span class="glyphicon" [class.glyphicon-check]="project.phase.handover" [class.glyphicon-unchecked]="!project.phase.handover"
+												 aria-hidden="true"></span>
+												{{contentService.contents['projectdetail.button.finished']}}
+											</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-md-12">
+										<h2>Beoordelingscriteria</h2>
+										<hr/>
+
+										<div class="row">
+											<div class="col-md-12 ">
+												<questioninstances [reference_table]="'project'" [reference_id]="project.id" [reference_string]="'project'"></questioninstances>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</tab>
+
+							<tab [active]="selectedTab == 5">
+								<template tabHeading>
+									<i class="glyphicon glyphicon-none"></i> {{contentService.contents['projectdetail.heading5']}}
+								</template>
+								<div class="row">
+									<div class="col-md-12">
+										<h2>Rapportage</h2>
+										<hr/>
+
+										<div class="row">
+											<div class="col-md-12 ">
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</tab>
+						</tabset>
+
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+	</div>
+
+</div>

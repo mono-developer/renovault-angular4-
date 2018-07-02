@@ -1,0 +1,105 @@
+<div *ngIf="look == null">
+
+    <div class="row" *ngIf="!partyAccountService.signedInPartyAccount">
+        <div class="col-md-4 col-md-offset-4">
+
+            <!-- login form -->
+            <div *ngIf="selectedHeading == 'heading3'">
+                <!-- login with google form -->
+                <div *ngIf="enabledHeading2">
+                    <h2 class="form-signin-heading">{{contentService.contents['partyaccount.heading2']}}</h2>
+                    <img src="images/btn_google_signin_light_normal_web.png" />
+                </div>
+
+                <div *ngIf="enabledHeading3">
+                    <form class="form-signin" (ngSubmit)="onSubmitSignIn()" #signInForm="ngForm">
+                        <h2 class="form-signin-heading">{{contentService.contents['partyaccount.heading3']}}</h2>
+                        <label for="inputEmail" class="sr-only">Email</label>
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="loginEmail" name="loginEmail" required
+                            autofocus>
+                        <label for="inputPassword" class="sr-only">Password</label>
+                        <input type="password" id="inputPassword" class="form-control" placeholder="Wachtwoord" [(ngModel)]="loginPassword" name="loginPassword"
+                            required>
+                        <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="!signInForm.form.valid">{{contentService.contents['partyaccount.button.logon']}}</button>
+                    </form>
+                    <hr/>
+                    <div *ngIf="enabledHeading4">
+                        Nog geen account?
+                        <a routerLink="/partyaccountlogin/register">Registreer nu!</a>
+                    </div>
+                    <br/>
+                    <div *ngIf="enabledHeading6">
+                        Wachtwoord vergeten?
+                        <a routerLink="/partyaccountlogin/forgotpassword">Herstellen.</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- register form -->
+            <div *ngIf="enabledHeading4 && selectedHeading == 'heading4'">
+                <form class="form-signin" (ngSubmit)="onSubmitRegister()" #registerForm="ngForm">
+                    <h2 class="form-signin-heading">{{contentService.contents['partyaccount.heading4']}}</h2>
+                    <label for="inputEmail" class="sr-only">Email</label>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="registerEmail" name="registerEmail"
+                        required autofocus>
+                    <label for="inputPassword2" class="sr-only">Kies een wachtwoord</label>
+                    <input type="password" id="inputPassword2" class="form-control" placeholder="Kies een wachtwoord" [(ngModel)]="registerPassword"
+                        name="registerPassword" required>
+                    <label for="inputPassword3" class="sr-only">Wachtwoord nogmaals</label>
+                    <input type="password" id="inputPassword3" class="form-control" placeholder="Wachtwoord nogmaals" [(ngModel)]="registerPassword2"
+                        name="registerPassword2" required>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" required [checked]="acceptTerms" (change)="acceptTerms = !acceptTerms">
+                            <span [innerHTML]="contentService.contents['partyaccount.accepttermsmessage']"></span>
+                        </label>
+                    </div>
+                    <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="!registerForm.form.valid || !acceptTerms || registerPassword != registerPassword2">{{contentService.contents['partyaccount.button.register']}}</button>
+                </form>
+                <div *ngIf="enabledHeading3">
+                    <hr/> Heeft u al een account?
+                    <a routerLink="/partyaccountlogin">Inloggen</a>
+                </div>
+            </div>
+
+            <!-- restore password form -->
+            <div *ngIf="selectedHeading == 'heading5'">
+                <div *ngIf="enabledHeading5">
+                    <form class="form-signin" (ngSubmit)="onSubmitRestorePassword()" #restorePasswordForm="ngForm">
+                        <h2 class="form-signin-heading">{{contentService.contents['partyaccount.heading5']}}</h2>
+                        <label>{{restorePasswordEmail}}</label>
+                        <label for="inputPassword4" class="sr-only">Kies een wachtwoord</label>
+                        <input type="password" id="inputPassword4" class="form-control" placeholder="Kies een wachtwoord" [(ngModel)]="restorePassword"
+                            name="restorePassword" required>
+                        <label for="inputPassword5" class="sr-only">Wachtwoord nogmaals</label>
+                        <input type="password" id="inputPassword5" class="form-control" placeholder="Wachtwoord nogmaals" [(ngModel)]="restorePassword2"
+                            name="restorePassword2" [pattern]="restorePassword" required>
+                        <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="!restorePasswordForm.form.valid">{{contentService.contents['partyaccount.button.modify']}}</button>
+                    </form>
+                </div>
+                <div *ngIf="enabledHeading5">
+                    <hr/> Wijzigen niet de bedoeling?
+                    <a routerLink="/partyaccountlogin">Inloggen</a>
+                </div>
+            </div>
+
+            <!-- forgot password form -->
+            <div *ngIf="selectedHeading == 'heading6'">
+                <div *ngIf="enabledHeading6">
+                    <form class="form-signin" (ngSubmit)="onSubmitForgotPassword()" #forgotPasswordForm="ngForm">
+                        <h2 class="form-signin-heading">{{contentService.contents['partyaccount.heading6']}}</h2>
+                        <label>Vul het emailadres van uw account in.</label>
+                        <label for="inputEmail" class="sr-only">Email</label>
+                        <input type="email" id="inputEmail" class="form-control" placeholder="Email" [(ngModel)]="forgotPasswordEmail" name="forgotPasswordEmail"
+                            required autofocus>
+                        <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="!forgotPasswordForm.form.valid">{{contentService.contents['partyaccount.button.send']}}</button>
+                    </form>
+                </div>
+                <div *ngIf="enabledHeading6">
+                    <hr/> Toch niet vergeten?
+                    <a routerLink="/partyaccountlogin">Inloggen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

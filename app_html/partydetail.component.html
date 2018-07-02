@@ -1,0 +1,173 @@
+<form #partyDetailForm='ngForm'>
+    <div *ngIf="enabled">
+
+        <div class="row" *ngIf="party">
+            <div class="col-md-12">
+
+                <div>
+
+                    <div class="panel panel-default">
+                        <!--<div class="panel-heading"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        {{party.displayname}}</div> -->
+                        <div class="panel-body">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <!--<select class="form-control" id="party.partytype" [(ngModel)]="party.partytype">
+                                                <option *ngFor="let type of partytypes" [value]="type.value">  
+                                                    {{type.display}}
+                                                </option>
+                                            </select>-->
+
+                                                <label for="party.partytype">Type</label>
+                                                <br/>
+                                                <div class="btn-group" id="party.partytype">
+                                                    <label class="btn btn-default" *ngFor="let type of partytypes" [(ngModel)]="party.partytype" name="party.partytype" [btnRadio]="type.value">{{type.display}}</label>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div *ngIf=" party.partytype == 'houseowner' ">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="party.title">Aanspreektitel</label>
+                                                    <br/>
+                                                    <div class="btn-group" id="party.title">
+                                                        <label class="btn btn-default" *ngFor="let title of partytitles" [(ngModel)]="party.title" name="party.title" [btnRadio]="title.value">{{title.display}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="party.firstname">Voornaam</label>
+                                                    <input class="form-control" id="party.firstname" [(ngModel)]="party.firstname" name="party.firstname">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="party.infixname">Tussenvoegsel</label>
+                                                    <input class="form-control" id="party.infixname" [(ngModel)]="party.infixname" name="party.infixname">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="party.lastname">Achternaam</label>
+                                                    <input class="form-control" id="party.lastname" [(ngModel)]="party.lastname" name="party.lastname">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf=" party.partytype != 'houseowner' ">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="party.companykvknumber">Kvk nummer</label>
+                                                    <input class="form-control" id="party.companykvknumber" [(ngModel)]="party.companykvknumber" name="party.companykvknumber">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="party.companyname">Naam</label>
+                                                    <input class="form-control" id="party.companyname" [(ngModel)]="party.companyname" name="party.companyname">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="party.postalcode">Postcode</label>
+                                                <input class="form-control" id="party.postalcode" [(ngModel)]="party.postalcode" name="party.postalcode">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="party.housenumber">Huisnummer</label>
+                                                <input class="form-control" id="party.housenumber" [(ngModel)]="party.housenumber" name="party.housenumber">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="party.housenumberadd">Toevoeging</label>
+                                                <input class="form-control" id="party.housenumberadd" [(ngModel)]="party.housenumberadd" name="party.housenumberadd">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="party.street">Straat</label>
+                                                <input class="form-control" id="party.street" [(ngModel)]="party.street" name="party.street">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="party.city">Woonplaats</label>
+                                                <input class="form-control" id="party.city" [(ngModel)]="party.city" name="party.city">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="form-group">
+                                        <label for="party.email">Email</label>
+                                        <input type="email" class="form-control" id="party.email" [(ngModel)]="party.email" name="party.email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="party.phone">Telefoon</label>
+                                        <input class="form-control" id="party.phone" [(ngModel)]="party.phone" name="party.phone">
+                                    </div>
+
+
+                                    <!--
+                                        <div class="form-group"><label for="party.bankaccount">IBAN</label>
+                                            <input class="form-control" id="party.bankaccount" [(ngModel)]="party.bankaccount">
+                                        </div>
+                                    -->
+                                    <div *ngIf="!autoSaveService.enabled">
+                                        <hr/>
+                                        <button class="btn btn-default" (click)="save()">
+                                            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['site.button.save']}}</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

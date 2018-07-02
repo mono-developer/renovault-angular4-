@@ -1,0 +1,393 @@
+<form #hoaDetailForm='ngForm'>
+    <div class="row">
+
+        <div class="col-md-12 col-md-offset-0">
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="hoa.postalcode">Postcode</label>
+                        <input class="form-control" #postalcodeInput id="hoa.postalcode" name="hoa.postalcode" [(ngModel)]="hoa.postalcode" (ngModelChange)="lookup()"
+                            [pattern]="postalcodePattern" placeholder="3039LD" [disabled]="read_only">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.housenumber">Huisnummer</label>
+                        <input class="form-control" #housenumberInput id="hoa.housenumber" name="hoa.housenumber" [(ngModel)]="hoa.housenumber" (ngModelChange)="lookup()"
+                            [pattern]="housenumberPattern" placeholder="70" [disabled]="read_only">
+                    </div>
+                </div>
+                <!-- <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="hoa.housenumberadd">Toevoeging</label>
+                        <input class="form-control" #housenumberaddInput id="hoa.housenumberadd" name="hoa.housenumberadd" [(ngModel)]="hoa.housenumberadd"
+                            (ngModelChange)="lookup()" [disabled]="read_only">
+                    </div>
+                </div> -->
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.street">Straat</label>
+                        <input class="form-control" id="hoa.street" name="hoa.street" [(ngModel)]="hoa.street" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.city">Woonplaats</label>
+                        <input class="form-control" id="hoa.city" name="hoa.city" [(ngModel)]="hoa.city" disabled>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Kaart</label>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div *ngIf="hoa.lookupdone">
+                                <googlemap #googleMap [lat]="hoa.lat" [lon]="hoa.lon"></googlemap>
+                            </div>
+                            <div *ngIf="!hoa.lookupdone">
+                                Voer een bestaande combinatie postcode en huisnummer in...
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <hr/>
+
+            <!-- <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.owner">Ik ben de eigenaar</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.owner">
+                            <label class="btn btn-default" *ngFor="let yesno of yesnos" [(ngModel)]="hoa.owner" name="hoa.owner" [btnRadio]="yesno.value"
+                                [attr.disabled]="read_only?'':null">{{yesno.display}}</label>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-4" *ngIf=" hoa.owner == 'yes' ">
+                    <div class="form-group">
+                        <label for="hoa.ownersinceyear">Eigenaar sinds</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">Jaar</div>
+                            <input class="form-control" id="hoa.ownersinceyear" name="hoa.ownersinceyear" [(ngModel)]="hoa.ownersinceyear" pattern="[0-9]{4}"
+                                placeholder="Bijvoorbeeld: 2012" [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4" *ngIf=" hoa.owner == 'yes' ">
+                    <div class="panel">
+                        Kadastrale registratie
+                        <images [reference_table]="'hoa'" [reference_id]="hoa.id" [reference_string]="'owner_kadaster_registration'" [read_only]="read_only"></images>
+                    </div>
+                </div>
+            </div>
+
+            <hr/> -->
+
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.hoatype">Type</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.hoatype">
+                            <label class="btn btn-default" *ngFor="let type of hoatypes" [(ngModel)]="hoa.hoatype" name="hoa.hoatype"
+                                [btnRadio]="type.value" [attr.disabled]="read_only?'':null">{{type.display}}</label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf=" hoa.hoatype == 'rijtjeswoning' || hoa.hoatype == 'appartement' ">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.hoasubtype">Subtype</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.hoasubtype">
+                            <label class="btn btn-default" *ngFor="let subtype of hoasubtypes" [(ngModel)]="hoa.hoasubtype" name="hoa.hoasubtype"
+                                [btnRadio]="subtype.value" [attr.disabled]="read_only?'':null">{{subtype.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf=" hoa.hoatype == 'appartement' ">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.hoaposition">Positie</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.hoaposition">
+                            <label class="btn btn-default" *ngFor="let position of hoapositions" [(ngModel)]="hoa.hoaposition" name="hoa.hoaposition"
+                                [btnRadio]="position.value" [attr.disabled]="read_only?'':null">{{position.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/> -->
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label>VvE leden</label>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="hoaMembers">
+                <div class="col-md-4" *ngFor="let h of hoaMembers">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span> {{h.objectdisplaystring}}
+                            <span class="pull-right">
+                                <a *ngIf="!read_only" (click)=" deleteMember(h); " style="cursor: pointer;">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Eigenaar</label>
+                                        <br/>
+                                        <typeahead [inputBeanType]="'party'" [inputSelectedBeanId]="h.ownerpartyid" [inputNewPartyType]="'houseowner'" (onSelectionChanged)="selectMemberParty(h, $event)"></typeahead>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Een huis toevoegen...
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>&nbsp;</label>
+                                        <br/>
+                                        <typeahead #objectTypeahead [inputBeanType]="'object'" (onSelectionChanged)="onObjectselected()"></typeahead>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="objectTypeahead && objectTypeahead.selectedBean && !selectedBeanAlreadyAdded">
+                                    <button class="btn btn-default" (click)="addHoaMember(objectTypeahead.selectedBean)">
+                                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Voeg '{{objectTypeahead.selectedBean.getDisplayString()}}' toe</button>
+                                </div>
+                                <div class="col-md-12" *ngIf="objectTypeahead && objectTypeahead.selectedBean && selectedBeanAlreadyAdded">
+                                    '{{objectTypeahead.selectedBean.getDisplayString()}}' is al toegevoegd...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Huisonderdelen die onder de VvE vallen
+                            <span *ngIf="!read_only">(verslepen)</span>
+                        </label>
+                        <br/>
+                        <ng-template #itemTemplate let-item="item" let-index="index">
+                            <span class="btn btn-default active sortable-btn" *ngIf='hoaService.defaultHouseparts'>
+                                <span class="glyphicon glyphicon-menu-hamburger"></span>{{hoaService.getHousepartName(item.value)}}</span>
+                        </ng-template>
+                        <ng-template #itemTemplateExcluded let-item="item" let-index="index">
+                            <span class="btn btn-default sortable-btn" *ngIf='hoaService.defaultHouseparts'>
+                                <span class="glyphicon glyphicon-menu-hamburger"></span>{{hoaService.getHousepartName(item.value)}}</span>
+                        </ng-template>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Wel onder VvE</label>
+                                <div *ngIf="!read_only">
+                                    <bs-sortable [(ngModel)]="hoa.houseparts" (ngModelChange)="setHousepartsChanged()" name="hoa.houseparts" [itemTemplate]="itemTemplate"
+                                        placeholderItem="Sleep hierheen..." itemClass="sortable-item" itemActiveClass="sortable-item-active"
+                                        placeholderClass="sortable-item" wrapperClass="sortable-wrapper">
+                                    </bs-sortable>
+                                </div>
+                                <div *ngIf="read_only">
+                                    <div *ngFor='let housepart of hoa.houseparts'>
+                                        {{hoaService.getHousepartName(housepart)}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Niet onder VvE</label>
+                                <div *ngIf="!read_only">
+                                    <bs-sortable [(ngModel)]="hoa.housepartsexcluded" (ngModelChange)="setHousepartsChanged()" name="hoa.housepartsexcluded"
+                                        [itemTemplate]="itemTemplateExcluded" placeholderItem="Sleep hierheen..." itemClass="sortable-item"
+                                        itemActiveClass="sortable-item-active" placeholderClass="sortable-item" wrapperClass="sortable-wrapper">
+                                    </bs-sortable>
+                                </div>
+                                <div *ngIf="read_only">
+                                    <div *ngFor='let housepart of hoa.housepartsexcluded'>
+                                        {{hoaService.getHousepartName(housepart)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <hr/>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.constructionyear">Bouwjaar</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">Jaar</div>
+                            <input class="form-control" id="hoa.constructionyear" name="hoa.constructionyear" [(ngModel)]="hoa.constructionyear" pattern="[0-9]{4}"
+                                placeholder="Bijvoorbeeld: 2012" [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.livingsurface">Woonoppervlakte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.livingsurface" name="hoa.livingsurface" [(ngModel)]="hoa.livingsurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.volume">Inhoud</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.volume" name="hoa.volume" [(ngModel)]="hoa.volume" pattern="[0-9]+" [disabled]="read_only">
+                            <div class="input-group-addon">m3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.outsidesurface">Gebouwgebonden buitenruimte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.outsidesurface" name="hoa.outsidesurface" [(ngModel)]="hoa.outsidesurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.lotsurface">Perceeloppervlakte</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.lotsurface" name="hoa.lotsurface" [(ngModel)]="hoa.lotsurface" pattern="[0-9]+"
+                                [disabled]="read_only">
+                            <div class="input-group-addon">m2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.nooffloors">Aantal woonlagen</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.nooffloors" name="hoa.nooffloors" [(ngModel)]="hoa.nooffloors" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.noofrooms">Aantal kamers</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.noofrooms" name="hoa.noofrooms" [(ngModel)]="hoa.noofrooms" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.noofwetrooms">Aantal natte ruimtes</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.noofwetrooms" name="hoa.noofwetrooms" [(ngModel)]="hoa.noofwetrooms" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.noofbasements">Aantal kelders</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.noofbasements" name="hoa.noofbasements" [(ngModel)]="hoa.noofbasements" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="hoa.noofbalconies">Aantal balkons</label>
+                        <div class="input-group">
+                            <input class="form-control" id="hoa.noofbalconies" name="hoa.noofbalconies" [(ngModel)]="hoa.noofbalconies" pattern="[0-9]+"
+                                [disabled]="read_only">
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+
+            <hr/>
+
+            <!-- <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.familyadults">Aantal inwonende volwassenen</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.familyadults">
+                            <label class="btn btn-default" *ngFor="let familyadult of familyadults" [(ngModel)]="hoa.familyadults" name="hoa.familyadults"
+                                [btnRadio]="familyadult.value" [attr.disabled]="read_only?'':null">{{familyadult.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="hoa.familychildren">Aantal inwonende kinderen</label>
+                        <br/>
+                        <div class="btn-group" id="hoa.familychildren">
+                            <label class="btn btn-default" *ngFor="let familychild of familychildren" [(ngModel)]="hoa.familychildren" name="hoa.familychildren"
+                                [btnRadio]="familychild.value" [attr.disabled]="read_only?'':null">{{familychild.display}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ -->
+            <div (click)="save()" *ngIf="!read_only && !autoSaveService.enabled">
+                <button class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['site.button.save']}}</button>
+            </div>
+        </div>
+    </div>
+</form>

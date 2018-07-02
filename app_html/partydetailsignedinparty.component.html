@@ -1,0 +1,3 @@
+<div *ngIf="party">
+    <partydetail #partyDetailComponent [party]="party" (onSave)='onSave($event)'></partydetail>
+</div>

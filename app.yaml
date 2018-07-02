@@ -1,0 +1,176 @@
+# needed to run from windows
+# application: renovault
+# version: wpfromstarterproject
+
+runtime: php55
+api_version: 1
+threadsafe: yes
+
+env_variables:
+  
+  DEV_OR_DIST: DEV
+
+  # OVERHEID.io
+  OVERHEID_IO_API_KEY_DEV: 7c4406120dc739d8ee0bb375d27fd8e9c560292c55c23e755b63bfee1c5ff740
+  OVERHEID_IO_API_KEY_DIST: 7c4406120dc739d8ee0bb375d27fd8e9c560292c55c23e755b63bfee1c5ff740
+
+  MYSQL_DSN_PROD_USER: mysql:unix_socket=/cloudsql/mapsrenovault:europe-west1:dbrenovault
+  MYSQL_USER_PROD_USER: drome_user
+  MYSQL_PASSWORD_PROD_USER: 1SIrAkLGknklKZU61y6u
+
+  MYSQL_DSN_DEV_USER: mysql:host=127.0.0.1
+  MYSQL_USER_DEV_USER: drome_user
+  MYSQL_PASSWORD_DEV_USER: 1SIrAkLGknklKZU61y6u
+
+  MYSQL_DSN_PROD_SYSTEM: mysql:unix_socket=/cloudsql/mapsrenovault:europe-west1:dbrenovault
+  MYSQL_USER_PROD_SYSTEM: drome_system
+  MYSQL_PASSWORD_PROD_SYSTEM: pWyu2rbcIrGXQQ5TAyRC
+
+  MYSQL_DSN_DEV_SYSTEM: mysql:host=127.0.0.1
+  MYSQL_USER_DEV_SYSTEM: drome_system
+  MYSQL_PASSWORD_DEV_SYSTEM: pWyu2rbcIrGXQQ5TAyRC
+
+  MYSQL_DSN_PROD_BUG: mysql:dbname=flyspray;unix_socket=/cloudsql/mapsrenovault:europe-west1:dbrenovault
+  MYSQL_USER_PROD_BUG: flyspray
+  MYSQL_PASSWORD_PROD_BUG: CM0kvcQZAQcbGa9iKBbZ
+
+  MYSQL_DSN_DEV_BUG: mysql:dbname=flyspray;host=127.0.0.1
+  MYSQL_USER_DEV_BUG: flyspray
+  MYSQL_PASSWORD_DEV_BUG: CM0kvcQZAQcbGa9iKBbZ
+
+handlers:
+
+- url: /js
+  static_dir: js
+  secure: always
+
+- url: /node_modules
+  static_dir: node_modules
+  secure: always
+
+- url: /css
+  static_dir: css
+  secure: always
+
+- url: /fonts
+  static_dir: fonts
+  secure: always
+
+- url: /app
+  static_dir: app
+  secure: always
+
+- url: /app_html
+  static_dir: app_html
+  secure: always
+
+- url: /app_js
+  static_dir: app_js
+  secure: always
+
+- url: /dist
+  static_dir: dist
+  secure: always
+
+- url: /images
+  static_dir: images
+  secure: always
+
+# admin
+- url: /back/admin/css
+  static_dir: back/admin/css
+  secure: always
+  login: admin
+
+- url: /back/admin/js
+  static_dir: back/admin/js
+  secure: always
+  login: admin
+
+- url: /back/admin/fonts
+  static_dir: back/admin/fonts
+  secure: always
+  login: admin
+
+- url: /back/admin/(.*\.php)$
+  script: /back/admin/\1
+  secure: always
+  login: admin
+
+- url: /back/admin/(.*)$
+  script: /back/admin/index.php
+  secure: always
+  login: admin
+
+# documentation
+- url: /back/documentation/(.*)$
+  script: back/documentation/index.html
+  secure: always
+  login: admin
+
+# flyspray
+- url: /back/flyspray/js
+  static_dir: back/flyspray/js
+  secure: always
+  login: admin
+
+- url: /back/flyspray/themes
+  static_dir: back/flyspray/themes
+  secure: always
+  login: admin
+  application_readable: true
+
+- url: /back/flyspray/includes
+  static_dir: back/flyspray/includes
+  secure: always
+  login: admin
+  application_readable: true
+
+- url: /back/flyspray/templates
+  static_dir: back/flyspray/templates
+  secure: always
+  login: admin
+  application_readable: true
+
+- url: /back/flyspray/plugins
+  static_dir: back/flyspray/plugins
+  secure: always
+  login: admin
+  application_readable: true
+
+- url: /back/flyspray/(.*\.php)$
+  script: back/flyspray/\1
+  secure: always
+  login: admin
+
+- url: /back/flyspray/(.*)$
+  script: back/flyspray/index.php
+  secure: always
+  login: admin
+
+
+# back
+- url: /back(.*)$
+  script: back/index.php
+  secure: always
+  login: admin
+
+# api
+- url: /api/(.*)$
+  script: /api/index.php
+  secure: always
+
+# robots
+- url: /robots.txt
+  script: robots.php
+  secure: always
+
+# sitemap
+- url: /sitemap.xml
+  script: sitemap.php
+  secure: always
+
+# front handler (matches anything)
+- url: /(.*)$
+  script: index.php 
+  secure: always

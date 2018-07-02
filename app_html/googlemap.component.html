@@ -1,0 +1,7 @@
+<!--<agm-map #googleMap [latitude]="lat" [longitude]="lon" [zoom]="14" [mapDraggable]="true" [disableDoubleClickZoom]="false"
+ [streetViewControl]="false">
+	<agm-marker [latitude]="lat" [longitude]="lon"></agm-marker>
+</agm-map>-->
+<ngui-map zoom="16" center="{{lat}}, {{lon}}">
+	<marker [position]="[lat, lon]"></marker>
+</ngui-map>

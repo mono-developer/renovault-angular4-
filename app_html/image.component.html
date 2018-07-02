@@ -1,0 +1,31 @@
+<div class="outerwrapper">
+	<div class="wrapper">
+		<a *ngIf="show_download" [href]=" imageService.getImageUrl(image, true) " download="{{image.name}}" (click)=" onDownloadHandler(image); "
+		 style="cursor: pointer;">
+			<span class="glyphicon glyphicon-download"></span>
+		</a>
+		<a *ngIf="!read_only && show_delete" (click)=" onDeleteHandler(image); " style="cursor: pointer;">
+			<span class="glyphicon glyphicon-remove"></span>
+		</a>
+		<a *ngIf="!read_only && show_rotate && imageService.getImageInternalType(image) == 'image' " (click)=" onRotateHandler(image); "
+		 style="cursor: pointer;">
+			<span class="glyphicon glyphicon-repeat"></span>
+		</a>
+	</div>
+	<a [@rotatedState]='rotatedState' class="thumbnail" (click)=" onClickHandler(image); " style="cursor: pointer;">
+		<div class="squareimage">
+			<img [src]=" imageService.getImageThumbnailUrl(image) " *ngIf=" imageService.getImageInternalType(image) == 'image' ">
+			<img [src]=" imageService.getImageThumbnailUrl(image) " *ngIf=" imageService.getImageInternalType(image) != 'image' " class='iconimage'>
+		</div>
+	</a>
+	<div *ngIf="show_download" class="wrapperBottom">
+		<ng-template #popTemplate>
+			<div>{{image.name}}</div>
+		</ng-template>
+		<span class="label label-info" [popover]="popTemplate" placement="bottom" triggers="mouseenter:mouseleave" style="cursor: default;">
+			<span class="glyphicon glyphicon-info-sign"></span>
+			<span *ngIf="image.name.length <= 16">{{image.name}}</span>
+			<span *ngIf="image.name.length > 16">{{image.name | slice:0:9}}&hellip;{{image.name | slice:-6}}</span>
+		</span>
+	</div>
+</div>

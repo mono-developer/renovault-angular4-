@@ -1,0 +1,22 @@
+<div *ngIf="party">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> {{party.name}} {{party.type}} {{party.email}}
+        </div>
+        <!--<div class="panel-body">
+
+        </div>-->
+
+        <div class="panel-footer">
+            <button type="button" class="btn btn-default" (click)="goToDetails()">{{contentService.contents['site.button.details']}}</button>
+            <button type="button" class="btn btn-default" (click)="delete(party)">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              {{contentService.contents['site.button.delete']}}
+            </button>
+        </div>
+
+    </div>
+
+
+
+</div>

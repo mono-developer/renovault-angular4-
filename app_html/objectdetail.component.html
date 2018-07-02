@@ -1,0 +1,196 @@
+<div *ngIf="enabled && object">
+	<div class="row">
+		<div class="col-md-12">
+			<tabset>
+				<tab [active]="selectedHeading == 'heading1'" *ngIf="enabledHeading1" (select)="select('heading1')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-home"></i> {{contentService.contents['objectdetail.heading1']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div>
+
+								<div class="panel panel-default">
+									<div class="panel-body">
+
+										<objectdetailform [object]="object" [read_only]="read_only" (onSave)="onSave()" (onHousepartsChanged)="onHousepartsChanged()"
+										 #objectDetailForm></objectdetailform>
+
+									</div>
+
+								</div>
+
+							</div>
+
+
+						</div>
+					</div>
+
+
+					<!-- <div *ngIf="enabledHeading1Goals" class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default" *ngIf="enabledHeading1Goals">
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group" *ngIf="tagFilterOptions">
+												<label for="object.goals">Doelstellingen</label>
+												<br/>
+												<div class="btn-group" id="object.tagfiltertag">
+													<div *ngFor="let t of tagFilterOptions" style="padding-bottom: 10px;">
+														<label class="btn btn-default" [(ngModel)]="object.tagfiltertag" [btnRadio]="t.tag" (ngModelChange)="tagFilterChangeHandler(false)"
+														 [attr.disabled]="read_only?'':null">{{t.name}}
+															<span *ngIf="showTags == 'Y'"> ({{t.tag}}) </span>
+														</label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div> -->
+
+				</tab>
+				<tab [active]="selectedHeading == 'heading2'" *ngIf="enabledHeading2" (select)="select('heading2')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-certificate"></i> {{contentService.contents['objectdetail.heading2']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div class="panel panel-default">
+								<div class="panel-body">
+
+									<wizard2 [treename]="'02DOCUMENTS'" [reference_table]="'object'" [reference_id]='object.id' [reference_string]="'02DOCUMENTS'"
+									 [read_only]="read_only" [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #documentsWizard></wizard2>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading3'" *ngIf="enabledHeading3" (select)="select('heading3')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['objectdetail.heading3']}}
+					</template>
+					<br/>
+
+					<div class="row">
+
+						<div class="col-md-12">
+
+							<div class="panel panel-default">
+
+								<div class="panel-body">
+
+									<wizard2 [treename]="'01HOUSEPARTS'" [reference_table]="'object'" [reference_id]='object.id' [reference_string]="'01HOUSEPARTS'"
+									 [read_only]="read_only" [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #housePartsWizard></wizard2>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading4'" *ngIf="enabledHeading4" (select)="select('heading4')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['objectdetail.heading4']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div>
+
+								<div class="row">
+
+									<div class="col-md-12">
+
+										<div class="panel panel-default">
+
+											<div class="panel-body">
+												<wizard2 [treename]="'03REPORTS'" [reference_table]="'object'" [reference_id]='object.id' [reference_string]="'03REPORTS'"
+												 [read_only]="read_only" [tagfilterparameter]="getTagFilterParameter()" [hide_question_text]="true" #reportsWizard></wizard2>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading5'" *ngIf="enabledHeading5" (select)="select('heading5')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-wrench"></i> {{contentService.contents['objectdetail.heading5']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div>
+
+								<div class="row">
+
+									<div class="col-md-12">
+
+										<div class="panel panel-default">
+
+											<div class="panel-body">
+												<reportdetail [reportName]="'report4'" [parameters]="getReportDetailParameterString()" #mjopReportComponent></reportdetail>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+				<tab [active]="selectedHeading == 'heading6'" *ngIf="enabledHeading6" (select)="select('heading6')">
+					<template tabHeading>
+						<i class="glyphicon glyphicon-ok"></i> {{contentService.contents['objectdetail.heading6']}}
+					</template>
+					<br/>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div>
+
+								<div class="row">
+
+									<div class="col-md-12">
+
+										<div class="panel panel-default">
+
+											<div class="panel-body">
+												<reports *ngIf="object && object.tagfiltertags" [parameters]="'object:' + object.id + '::' + getTagFilterParameter() + ':' + getHousepartsParameter()"
+												 #reportsComponent></reports>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</tab>
+
+			</tabset>
+
+
+		</div>
+	</div>
+</div>

@@ -1,0 +1,58 @@
+<div>
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <div *ngIf="question">
+
+            <h4>{{question.text}}</h4>
+
+
+            <div class="row">
+              <div class="col-md-12">
+
+
+                <div class="col-md-6" *ngFor="let answer of question.navigation_answers">
+                  <button class="btn btn-default btn-block" type="button" (click)="answerQuestion(question.id, answer.id);"> {{answer.text}} </button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4">
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+
+          <div>
+            Meer informatie...
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <!-- 
+
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+</div>

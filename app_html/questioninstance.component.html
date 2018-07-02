@@ -1,0 +1,128 @@
+<div *ngIf="!(question && instance)">
+	<div class="well">
+		<div style='text-align: center;'>
+			<img style="max-width:30px; " src="/images/spinner.gif">
+		</div>
+	</div>
+</div>
+<div *ngIf="question && instance">
+
+	<div *ngIf="question.type">
+
+
+		<div *ngIf="question.type == 'HEADING'">
+			<legend>{{question.text}}</legend>
+		</div>
+
+		<div *ngIf="question.type == 'SEPARATOR'">
+			<hr/>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'CONTENTITEM'">
+			CONTENTITEM
+		</div>
+
+		<div *ngIf="question.type != 'HEADING' && question.type != 'SEPARATOR' && question.type != 'CONTENTITEM'">
+
+			<span *ngIf="question.extrainfo">
+				<template #popTemplate>
+					<div [innerHtml]="question.extrainfo"></div>
+				</template>
+				<span class="glyphicon glyphicon-info-sign" [popover]="popTemplate" placement="right" triggers="mouseenter:mouseleave" style="cursor: default;"></span>
+			</span>
+
+			<strong>{{question.text}}</strong>
+
+			<span class="label label-info pull-right" *ngIf="showTreeReference">{{reference_table}} : {{reference_id}} : {{reference_string}}</span>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'RADIO'">
+			<div class="btn-group" *ngFor="let option of question.options">
+				<label class="btn btn-default" [(ngModel)]="instance.answer" [name]="instance.reference_string" btnRadio="{{option}}" [attr.disabled]="read_only?'':null">{{option}}</label>
+			</div>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'DROPDOWN'">
+			<select [(ngModel)]="instance.answer" class="form-control" [name]="instance.reference_string">
+				<option *ngFor="let option of question.options" [ngValue]="option" [attr.disabled]="read_only?'':null">{{option}}</option>
+			</select>
+		</div>
+
+
+		<div class='questioninstance' *ngIf="question.type == 'CHECKBOX'">
+			<div *ngIf="checkboxModel">
+				<div class="btn-group" *ngFor="let option of question.options; let i = index;">
+					<label class="btn btn-default" btnCheckbox [(ngModel)]="checkboxModel[i]" [name]="instance.reference_string" (ngModelChange)="onChangeHandler()"
+					 [attr.disabled]="read_only?'':null">
+						<span class="glyphicon" [class.glyphicon-check]="checkboxModel[i]" [class.glyphicon-unchecked]="!checkboxModel[i]" aria-hidden="true"></span>
+						{{option}}
+					</label>
+				</div>
+			</div>
+		</div>
+
+
+		<div class='questioninstance' *ngIf="question.type == 'TEXT'">
+			<input class="form-control" id="instance.id" [name]="instance.reference_string" [(ngModel)]="instance.answer" [disabled]="read_only">
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'TEXTAREA'">
+			<textarea rows="6" class="form-control" id="instance.id" [name]="instance.reference_string" [(ngModel)]="instance.answer"
+			 [disabled]="read_only"></textarea>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'MULTITEXT'">
+			<div *ngFor="let option of question.options; let i = index">
+				{{option}}
+				<input class="form-control" [(ngModel)]="multitextModel[i]" [name]="instance.reference_string 
+				+ i" (ngModelChange)="onChangeHandler()" [disabled]="read_only">
+			</div>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'NUMBER'">
+			<input class="form-control" id="instance.id" [name]="instance.reference_string" pattern="[0-9]+" [(ngModel)]="instance.answer"
+			 [disabled]="read_only">
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'NUMBER_WITH_UNIT'">
+			<div class="input-group">
+				<input class="form-control" id="instance.id" [name]="instance.reference_string" pattern="[0-9]+" [(ngModel)]="instance.answer"
+				 [disabled]="read_only">
+				<div class="input-group-addon">{{question.unit}}</div>
+			</div>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'YEAR'">
+			<div class="input-group">
+				<div class="input-group-addon">Jaar</div>
+				<input class="form-control" id="instance.id" [name]="instance.reference_string" pattern="[0-9]{4}" [(ngModel)]="instance.answer"
+				 placeholder="Bijvoorbeeld: 2012" [disabled]="read_only">
+			</div>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'PARTY'">
+			<div *ngIf="read_only">
+				<input class="form-control" [(ngModel)]="instance.answer" name="instance.reference_string" [disabled]="read_only">
+			</div>
+			<div *ngIf="!read_only">
+				<typeahead ngModel [name]="instance.reference_string" [inputBeanType]="'party'" [inputSelectedBeanId]="instance.answer" [inputNewPartyType]="'contractor'"
+				 (onSelectionChanged)="instance.answer=$event?.id"></typeahead>
+			</div>
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'DATE'" style="max-width: 305px;">
+			<input class="form-control" id="instance.id" value="{{instance.answer | date: 'dd-MM-yyyy'}}" disabled="true">
+			<!-- <datepicker [(ngModel)]="instance.answer" [name]="instance.reference_string" [disabled]="read_only"></datepicker> -->
+
+		</div>
+
+		<div class='questioninstance' *ngIf="question.type == 'UPLOAD_DOCUMENT'">
+			<div class="row">
+				<div class="col-md-12">
+					<images [reference_table]="'questioninstance'" [reference_id]="instance.id" [css_class]="'col-md-2'" [read_only]="read_only"
+					 (onImagesChanged)='onChangeHandler()'></images>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

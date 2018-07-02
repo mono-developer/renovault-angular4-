@@ -1,0 +1,43 @@
+<div *ngIf="enabled">
+
+		<div class="row">
+			<div class="col-md-12">
+				
+			<div *ngIf="projects">
+				<div *ngFor="let project of projects">
+		  			<my-project [project]="project" (onDeleteClicked)="delete(project);"></my-project>
+				</div>
+			</div>
+
+				<button class="btn btn-default" (click)="projectModal.show(); addNewProject();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{contentService.contents['site.button.add']}}</button>
+
+	  		</div>
+<!-- 	  		<div class="col-md-4">
+				<objects [look]="'selectedObjects'"></objects>
+	  		</div> -->
+	  	</div>
+
+	<div bsModal #projectModal="bs-modal" class="modal fade" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" (click)="projectModal.hide();" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title">{{contentService.contents['projects.modal.title']}}</h4>
+	      </div>
+	      <div class="modal-body">
+					<div class="row">
+				    <div class="col-md-12">
+	  					<wizard (onWizardDone)="wizardDone(); projectModal.hide();"></wizard>
+				    </div>
+					</div>
+
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+
+</div>

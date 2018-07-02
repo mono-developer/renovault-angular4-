@@ -1,0 +1,81 @@
+<div *ngIf="enabled">
+
+	<div *ngIf="look != 'selectedHoas'">
+
+		<div class="row">
+
+			<div class="col-md-12">
+				<!-- <div>
+					<p *xl>I'll show you if I'm a xl screen size.</p>
+					<p *lg>I'll show you if I'm a lg screen size.</p>
+					<p *md>I'll show you if I'm a md screen size.</p>
+					<p *sm>I'll show you if I'm a sm screen size.</p>
+					<p *xs>I'll show you if I'm a xs screen size.</p>
+				</div> -->
+				<div *ngIf="hoas">
+					<div *ngIf="hoas.length > 0">
+
+						<div class="list-group">
+							<a style="cursor: pointer;" class="list-group-item" *ngFor="let hoa of hoas" (click)="goToDetails(hoa)">
+								<span class="pull-right">
+									<button *ngIf=" hoa.granteerole == 'owner' " [disabled]="!hoaHasAddress(hoa)" type="button" class="btn btn-default" (click)="share($event, hoa)">
+										<span *hideItBootstrap="['xs']">Delen</span>
+										<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+									</button>
+									<button *ngIf=" hoa.granteerole == 'owner' " type="button" class="btn btn-default" (click)="delete($event, hoa)">
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									</button>
+								</span>
+								<h4 class="list-group-item-heading">{{getHoaAddress(hoa)}}</h4>
+								<p class="list-group-item-text">{{hoa.postalcode}} {{hoa.city}}&nbsp;</p>
+								<span *ngIf=" hoa.granteerole != 'owner' " class="label label-info">
+									<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>&nbsp;&nbsp;Met mij gedeeld</span>
+								<span *ngIf=" hoa.granteerole == 'owner' " class="label label-success">
+									<span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;&nbsp;Door mij toegevoegd</span>
+								<span *ngIf=" !hoaHasAddress(hoa) " class="label label-warning">
+									<span class="fas fa-exclamation-circle"></span>&nbsp;&nbsp;Voer minimaal de adresgegevens van deze VvE in.</span>
+							</a>
+						</div>
+
+					</div>
+					<div *ngIf="hoas.length <= 0" [innerHTML]="contentService.contents['hoas.nohoasmessage']">
+					</div>
+				</div>
+				<div>
+					<button [disabled]="!allowNewHoa()" class="btn btn-default" (click)="addNewHoa()">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{contentService.contents['site.button.add']}}</button>
+				</div>
+			</div>
+
+		</div>
+
+		<share></share>
+
+
+	</div>
+
+	<div *ngIf="look == 'selectedHoas'">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-home" aria-hidden="true"></span> Geselecteerd huis</div>
+			<div class="panel-body">
+				<div *ngIf="selectedHoas">
+					<div *ngIf="selectedHoas.length == 0">
+						<i>(geen huis geselecteerd)</i>
+					</div>
+					<div *ngIf="selectedHoas.length > 0">
+						<div *ngFor="let hoa of selectedHoas">
+							<hoa [hoa]="hoa" [look]="'small'"></hoa>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<a routerLink="/hoas" routerLinkActive="active">Wijzig selectie</a>
+			</div>
+		</div>
+
+	</div>
+
+</div>

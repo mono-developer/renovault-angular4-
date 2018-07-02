@@ -1,0 +1,97 @@
+<div *ngIf="enabled">
+
+	<div *ngIf="look == null">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div *ngIf="partyAccountService.signedInPartyAccount">
+
+					<div>
+
+						<div class="panel panel-default" *ngIf="false">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{contentService.contents['partyaccount.heading1']}}</div>
+							<div class="panel-body">
+
+								<div class="row">
+
+									<div class="col-md-6 col-md-offset-0">
+
+										<div class="form-group">
+
+											<label for="language">Taal</label>
+											<br/>
+											<div class="btn-group" id="language">
+												<label class="btn btn-default" *ngFor="let languageOption of languageOptions" [(ngModel)]="partyAccountService.signedInPartyAccount.language"
+												 [btnRadio]="languageOption.value">{{languageOption.display}}</label>
+											</div>
+
+										</div>
+
+										<div class="form-group">
+											<label for="multipleobjects">{{contentService.contents['partyaccount.button.multipleobjects']}}</label>
+											<br/>
+											<label id="multipleobjects" class="btn btn-default" btnCheckbox [(ngModel)]="partyAccountService.signedInPartyAccount.multipleobjects">
+												<span class="glyphicon" [class.glyphicon-check]="partyAccountService.signedInPartyAccount.multipleobjects" [class.glyphicon-unchecked]="!partyAccountService.signedInPartyAccount.multipleobjects"
+												 aria-hidden="true"></span>
+												{{contentService.contents['partyaccount.button.multipleobjects']}}
+											</label>
+
+
+										</div>
+
+
+										<div>
+											<button class="btn btn-default" (click)="save()">
+												<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['site.button.save']}}</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{contentService.contents['partyaccount.heading5']}}</div>
+							<div class="panel-body">
+
+								<div class="row">
+
+									<div class="col-md-6 col-md-offset-0">
+
+										<div class="form-group">
+											<label for="password">Wachtwoord</label>
+											<input type="password" class="form-control" id="password" [(ngModel)]="password" required>
+										</div>
+										<div class="form-group">
+											<label for="newpassword1">Nieuw wachtwoord</label>
+											<input type="password" class="form-control" id="newpassword1" [(ngModel)]="newpassword1" required>
+										</div>
+										<div class="form-group">
+											<label for="newpassword2">Nieuw wachtwoord nogmaals</label>
+											<input type="password" class="form-control" id="newpassword2" [(ngModel)]="newpassword2" [pattern]="newpassword1" required>
+										</div>
+
+										<div>
+											<button class="btn btn-default" (click)="changePassword()">
+												<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> {{contentService.contents['partyaccount.button.modify']}}</button>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

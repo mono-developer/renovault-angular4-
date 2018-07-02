@@ -1,0 +1,22 @@
+<div *ngIf="!displayInInit">
+  <input [(ngModel)]="enteredValue" [typeahead]="dataSource" (typeaheadLoading)="onTypeaheadLoading($event)" (typeaheadNoResults)="onTypeaheadNoResults($event)"
+    (typeaheadOnSelect)="onTypeaheadOnSelect($event)" typeaheadOptionsLimit="7" typeaheadOptionField="getDisplayString()" placeholder="{{displayPlaceholderMessage}}"
+    class="form-control" [ngClass]="{'ng-invalid': !displayValidNewContact() && inputOnlyEmail && !selectedBean && !displayValidEmail() && enteredValue}">
+</div>
+
+<div *ngIf="!displayInInit && !displayValidNewContact() && inputOnlyEmail && !selectedBean && !displayValidEmail() && enteredValue">
+  '{{enteredValue}}' is geen geldig emailadres.
+</div>
+
+<div *ngIf="!displayInInit && displayValidNewContact()" class="">
+  Voeg '{{enteredValue}}' aan uw contacten toe.
+  <div>
+    <button class="btn btn-default" (click)="add()">
+      <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{contentService.contents['site.button.add']}}</button>
+  </div>
+</div>
+
+<!--<div *ngIf="selectedBean && !displayInInit" class="">
+  <br/> Bekijk
+  <a [routerLink]="'/parties/' + selectedBean.id">{{selectedBean.displayname}} <span class="glyphicon glyphicon-new-window"></span></a>
+</div>-->
